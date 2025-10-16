@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>Dashboard Version History</title>
+  <script src='https://cdn.tailwindcss.com'></script>
+  <script src='https://unpkg.com/lucide@latest'></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+      /* Ultra Premium Dark Gradient Background */
+      background: linear-gradient(135deg, #050515, #1a1a2e, #16213e);
+      background-attachment: fixed;
+      color: #ffffff;
+      margin: 0;
+      padding: 0;
+      font-size: 20px;
+    }
+
+    /* Gradient Text Styles */
+    .gradient-text-primary {
+      background: linear-gradient(135deg, #6ee7b7 0%, #a7f3d0 50%, #fde68a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-text-secondary {
+      background: linear-gradient(to right, #e0e7ff, #c7d2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-text-accent {
+      background: linear-gradient(135deg, #f472b6 0%, #fbbf24 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Card Styles */
+    .card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.01);
+      box-shadow: 0 20px 40px rgba(110, 231, 183, 0.2), 0 0 30px rgba(147, 197, 253, 0.2);
+      border-color: rgba(110, 231, 183, 0.3);
+    }
+
+    /* Section Number */
+    .section-number {
+      background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%);
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 4px 20px rgba(91, 33, 182, 0.5);
+    }
+
+    /* Code Inline */
+    .code-inline {
+      background: linear-gradient(135deg, rgba(147, 197, 253, 0.2), rgba(110, 231, 183, 0.2));
+      color: #f0f9ff;
+      padding: 0.3rem 0.8rem;
+      border-radius: 0.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Navigation */
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      background: linear-gradient(to right, #c4b5fd, #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1.3rem;
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 3px;
+      bottom: -5px;
+      left: 0;
+      background: linear-gradient(to right, #6ee7b7, #fde68a);
+      transition: width 0.4s ease-in-out;
+      border-radius: 2px;
+    }
+
+    .nav-link:hover::before,
+    .nav-link.active::before {
+      width: 100%;
+    }
+
+    /* Feature Box */
+    .feature-box {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out, padding 0.5s ease-in-out;
+      opacity: 0;
+    }
+
+    .feature-box.open {
+      max-height: 800px;
+      opacity: 1;
+      padding-top: 1.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .feature-content {
+      background: linear-gradient(135deg, rgba(244, 114, 182, 0.1), rgba(251, 191, 36, 0.1));
+      border: 1px solid rgba(244, 114, 182, 0.2);
+    }
+
+    .feature-content:hover {
+      border-color: rgba(244, 114, 182, 0.4);
+    }
+
+    /* Feature List Item */
+    .feature-list-item {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      border-left: 3px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .feature-list-item:hover {
+      border-left-color: #f472b6;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+      transform: translateX(5px);
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, rgba(5, 5, 21, 0.95), rgba(26, 26, 46, 0.95));
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Button */
+    .btn-glow {
+      background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%);
+      transition: all 0.3s ease;
+    }
+
+    .btn-glow:hover {
+      box-shadow: 0 0 25px rgba(91, 33, 182, 0.6);
+      transform: scale(1.05);
+    }
+
+    /* Icon Transition */
+    .icon-transition {
+      transition: transform 0.4s ease;
+    }
+
+    /* Chip Style */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, rgba(244, 114, 182, 0.25), rgba(251, 191, 36, 0.25));
+      border: 1px solid rgba(244, 114, 182, 0.4);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .chip-icon {
+      margin-right: 0.5rem;
+    }
+
+    /* Version Badge */
+    .version-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.3rem 0.8rem;
+      border-radius: 0.5rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .version-badge.v1 {
+      background: linear-gradient(135deg, rgba(147, 197, 253, 0.25), rgba(59, 130, 246, 0.25));
+      border: 1px solid rgba(147, 197, 253, 0.4);
+    }
+
+    .version-badge.v2 {
+      background: linear-gradient(135deg, rgba(110, 231, 183, 0.25), rgba(16, 185, 129, 0.25));
+      border: 1px solid rgba(110, 231, 183, 0.4);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #4c1d95, #5b21b6);
+      border-radius: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, #5b21b6, #4c1d95);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class='sticky top-0 z-50'>
+    <div class='w-full px-10 py-7 flex justify-between items-center'>
+      <div>
+        <h1 class='text-6xl font-black gradient-text-primary'>Dashboard Version History</h1>
+        <p class='text-xl gradient-text-secondary mt-2'>Evolution of the <span class='font-bold' style='-webkit-text-fill-color: #e0e7ff;'>Interviews And Submissions Dashboard</span></p>
+      </div>
+      <div class='flex items-center gap-6'>
+        <span class='text-xl gradient-text-secondary'>v2.0 Premium</span>
+        <div class='w-px h-8 bg-gradient-to-b from-transparent via-white to-transparent opacity-30'></div>
+        <button class='btn-glow p-4 rounded-full'>
+          <i data-lucide='git-branch' class='w-7 h-7 text-white'></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class='w-full px-10 py-14 grid grid-cols-1 lg:grid-cols-4 gap-14'>
+
+    <!-- Sidebar Navigation -->
+    <nav class='lg:col-span-1 lg:sticky lg:top-36 h-fit'>
+      <div class='card rounded-3xl p-10'>
+        <h3 class='font-black text-4xl gradient-text-primary mb-10'>Versions</h3>
+        <ul class='space-y-6 text-xl font-semibold'>
+          <li><a href='#version-1' class='nav-link block'>1. Version 1.0</a></li>
+          <li><a href='#version-2' class='nav-link block'>2. Version 2.0</a></li>
+          <li><a href='#key-improvements' class='nav-link block'>3. Key Improvements</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Content Area -->
+    <div class='lg:col-span-3 space-y-14'>
+
+      <!-- Section 1: Version 1.0 -->
+      <section id='version-1' class='card rounded-3xl p-12'>
+        <h2 class='text-5xl font-black mb-8 flex items-center'>
+          <span class='section-number flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-3xl mr-6'>1</span>
+          Version 1.0: The Original Dashboard
+        </h2>
+        <div class='flex items-center gap-4 mb-8'>
+          <span class='version-badge v1'>v1.0</span>
+          <span class='text-xl gradient-text-secondary'>Initial Release</span>
+        </div>
+        <p class='gradient-text-secondary leading-relaxed text-2xl mb-10'>
+          The first iteration of the Interviews And Submissions Dashboard was designed for <span class='font-bold gradient-text-primary'>ITsura Inc.</span> with a focus on employee contributions and basic metrics visualization.
+        </p>
+        <div class='space-y-5'>
+          <div class='feature-list-item p-7 rounded-2xl'>
+            <div class='flex items-start'>
+              <i data-lucide='users' class='w-9 h-9 text-blue-400 mr-5 mt-1 flex-shrink-0'></i>
+              <div>
+                <span class='font-bold gradient-text-primary text-2xl'>Employee Contribution Section:</span>
+                <p class='gradient-text-secondary text-xl mt-2'>Left sidebar showing individual employee performance metrics including interviews, submissions, and hires for each team member.</p>
+              </div>
+            </div>
+          </div>
+          <div class='feature-list-item p-7 rounded-2xl'>
+            <div class='flex items-start'>
+              <i data-lucide='pie-chart' class='w-9 h-9 text-blue-400 mr-5 mt-1 flex-shrink-0'></i>
+              <div>
+                <span class='font-bold gradient-text-primary text-2xl'>Basic Distribution Charts:</span>
+                <p class='gradient-text-secondary text-xl mt-2'>Four separate visualization modules showing Mode (Video/In-person), Level (Initial/Middle/Senior), Tier (1/2/3), and Status (Scheduled/Completed).</p>
+              </div>
+            </div>
+          </div>
+          <div class='feature-list-item p-7 rounded-2xl'>
+            <div class='flex items-start'>
+              <i data-lucide='bar-chart-3' class='w-9 h-9 text-blue-400 mr-5 mt-1 flex-shrink-0'></i>
+              <div>
+                <span class='font-bold gradient-text-primary text-2xl'>Top Metrics Display:</span>
+                <p class='gradient-text-secondary text-xl mt-2'>Three key metrics prominently displayed: Total Interviews (844), Total Submissions (2307), and Hired (17).</p>
+              </div>
+            </div>
+          </div>
+          <div class='feature-list-item p-7 rounded-2xl'>
+            <div class='flex items-start'>
+              <i data-lucide='calendar' class='w-9 h-9 text-blue-400 mr-5 mt-1 flex-shrink-0'></i>
+              <div>
+                <span class='font-bold gradient-text-primary text-2xl'>Date Display:</span>
+                <p class='gradient-text-secondary text-xl mt-2'>Full date display showing "Thursday, October 16, 2025" at the top of the dashboard.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Version 2.0 -->
+      <section id='version-2' class='card rounded-3xl p-12'>
+        <h2 class='text-5xl font-black mb-8 flex items-center'>
+          <span class='section-number flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-3xl mr-6'>2</span>
+          Version 2.0: The Enhanced Dashboard
+        </h2>
+        <div class='flex items-center gap-4 mb-8'>
+          <span class='version-badge v2'>v2.0</span>
+          <span class='text-xl gradient-text-secondary'>Current Release</span>
+        </div>
+        <p class='gradient-text-secondary leading-relaxed text-2xl mb-10'>
+          The redesigned dashboard for <span class='font-bold gradient-text-primary'>ITsura Inc.</span> features a more modern interface with enhanced data visualization, new metrics, and improved user experience.
+        </p>
+        <div class='space-y-5'>
+          <div class='feature-list-item p-7 rounded-2xl'>
+            <div class='flex items-start'>
+              <i data-lucide='trending-up' class='w-9 h-9 text-green-400 mr-5 mt-1 flex-shrink-0'></i>
+              <div>
+                <span class='font-bold gradient-text-primary text-2xl'>Conversion Funnel:</span>
+                <p class='gradient-text-secondary text-xl mt-2'>New visualization showing the recruitment conversion funnel with percentages (39.1%, 23.9%, 68.2%) for each stage of the hiring process.</p>
+              </div>
+            </div>
+          </div>
+          <div class='feature-list-item p-7 rounded-2xl'>
+            <div class='flex items-start'>
+              <i data-lucide='footprints' class='w-9 h-9 text-green-400 mr-5 mt-1 flex-shrink-0'></i>
+              <div>
+                <span class='font-bold gradient-text-primary text-2xl'>Walk-in Interviews Metric:</span>
+                <p class='gradient-text-secondary text-xl mt-2'>New metric added to track walk-in interviews (231), providing insights into unscheduled candidate traffic.</p>
+              </div>
+            </div>
+          </div>
+          <div class='feature-list-item p-7 rounded-2xl'>
+            <div class='flex items-start'>
+              <i data-lucide='table' class='w-9 h-9 text-green-400 mr-5 mt-1 flex-shrink-0'></i>
+              <div>
+                <span class='font-bold gradient-text-primary text-2xl'>Detailed Applicant Table:</span>
+                <p class='gradient-text-secondary text-xl mt-2'>Comprehensive table showing individual applicant details including Name, Company, Position, and Status for granular data analysis.</p>
+              </div>
+            </div>
+          </div>
+          <div class='feature-list-item p-7 rounded-2xl'>
+            <div class='flex items-start'>
+              <i data-lucide='layout' class='w-9 h-9 text-green-400 mr-5 mt-1 flex-shrink-0'></i>
+              <div>
+                <span class='font-bold gradient-text-primary text-2xl'>Redesigned Layout:</span>
+                <p class='gradient-text-secondary text-xl mt-2'>More intuitive and modern interface with improved data organization and visual hierarchy.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: Key Improvements -->
+      <section id='key-improvements' class='card rounded-3xl p-12'>
+        <h2 class='text-5xl font-black mb-8 flex items-center'>
+          <span class='section-number flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-3xl mr-6'>3</span>
+          Key Improvements from v1.0 to v2.0
+        </h2>
+        <p class='gradient-text-secondary leading-relaxed text-2xl mb-10'>
+          The evolution from version 1.0 to 2.0 brought significant enhancements to both functionality and user experience.
+        </p>
+        <div class='space-y-6'>
+          <div class='feature-content p-8 rounded-2xl'>
+            <div class='flex justify-between items-center'>
+              <h4 class='font-black gradient-text-primary text-3xl'>Visual Design & User Interface</h4>
+              <button class='feature-toggle flex items-center gap-3 text-xl gradient-text-accent hover:opacity-80 transition-opacity' data-target='feature-1'>
+                <span>View Details</span>
+                <i data-lucide='chevron-down' class='w-7 h-7 icon-transition'></i>
+              </button>
+            </div>
+            <div id='feature-1' class='feature-box'>
+              <div class='pt-5'>
+                <p class='gradient-text-secondary text-xl'>Complete redesign with a more modern, clean interface. Improved color scheme, better spacing, and enhanced visual hierarchy make data easier to interpret at a glance.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class='feature-content p-8 rounded-2xl'>
+            <div class='flex justify-between items-center'>
+              <h4 class='font-black gradient-text-primary text-3xl'>Data Visualization</h4>
+              <button class='feature-toggle flex items-center gap-3 text-xl gradient-text-accent hover:opacity-80 transition-opacity' data-target='feature-2'>
+                <span>View Details</span>
+                <i data-lucide='chevron-down' class='w-7 h-7 icon-transition'></i>
+              </button>
+            </div>
+            <div id='feature-2' class='feature-box'>
+              <div class='pt-5'>
+                <p class='gradient-text-secondary text-xl'>Added the conversion funnel visualization to provide insights into the recruitment pipeline. Improved charts for submission status and interview level distribution with more interactive elements.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class='feature-content p-8 rounded-2xl'>
+            <div class='flex justify-between items-center'>
+              <h4 class='font-black gradient-text-primary text-3xl'>New Metrics & Insights</h4>
+              <button class='feature-toggle flex items-center gap-3 text-xl gradient-text-accent hover:opacity-80 transition-opacity' data-target='feature-3'>
+                <span>View Details</span>
+                <i data-lucide='chevron-down' class='w-7 h-7 icon-transition'></i>
+              </button>
+            </div>
+            <div id='feature-3' class='feature-box'>
+              <div class='pt-5'>
+                <p class='gradient-text-secondary text-xl'>Introduced the Walk-in Interviews metric to track unscheduled candidate traffic. Added conversion rates at each stage of the hiring process to identify bottlenecks.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class='feature-content p-8 rounded-2xl'>
+            <div class='flex justify-between items-center'>
+              <h4 class='font-black gradient-text-primary text-3xl'>Detailed Data Access</h4>
+              <button class='feature-toggle flex items-center gap-3 text-xl gradient-text-accent hover:opacity-80 transition-opacity' data-target='feature-4'>
+                <span>View Details</span>
+                <i data-lucide='chevron-down' class='w-7 h-7 icon-transition'></i>
+              </button>
+            </div>
+            <div id='feature-4' class='feature-box'>
+              <div class='pt-5'>
+                <p class='gradient-text-secondary text-xl'>Added a comprehensive applicant details table that allows users to drill down into individual candidate information, replacing the employee contribution section with more actionable data.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      // Feature Box Toggles
+      const featureToggles = document.querySelectorAll('.feature-toggle');
+      featureToggles.forEach(button => {
+        button.addEventListener('click', () => {
+          const targetId = button.getAttribute('data-target');
+          const featureBox = document.getElementById(targetId);
+          const icon = button.querySelector('.icon-transition');
+          const text = button.querySelector('span');
+          featureBox.classList.toggle('open');
+          if (featureBox.classList.contains('open')) {
+            icon.style.transform = 'rotate(180deg)';
+            text.textContent = 'Hide Details';
+          } else {
+            icon.style.transform = 'rotate(0deg)';
+            text.textContent = 'View Details';
+          }
+        });
+      });
+      // Active Nav Link on Scroll
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-link');
+      const highlightNavLink = () => {
+        const scrollY = window.pageYOffset;
+        sections.forEach(current => {
+          const sectionHeight = current.offsetHeight;
+          const sectionTop = current.offsetTop - 150; // Adjust for sticky header
+          const sectionId = current.getAttribute('id');
+          if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+            navLinks.forEach(link => {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === `#${sectionId}`) {
+                link.classList.add('active');
+              }
+            });
+          }
+        });
+      };
+      window.addEventListener('scroll', highlightNavLink);
+      highlightNavLink(); // Initial call
+    });
+  </script>
+</body>
+
+</html>
