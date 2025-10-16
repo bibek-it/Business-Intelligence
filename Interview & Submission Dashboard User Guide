@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>User Guide: ITsutra Dashboard</title>
+  <script src='https://cdn.tailwindcss.com'></script>
+  <script src='https://unpkg.com/lucide@latest'></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+      /* Ultra Premium Dark Gradient Background */
+      background: linear-gradient(135deg, #050515, #1a1a2e, #16213e);
+      background-attachment: fixed;
+      color: #ffffff;
+      margin: 0;
+      padding: 0;
+      font-size: 20px;
+    }
+
+    /* Gradient Text Styles */
+    .gradient-text-primary {
+      background: linear-gradient(135deg, #6ee7b7 0%, #a7f3d0 50%, #fde68a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-text-secondary {
+      background: linear-gradient(to right, #e0e7ff, #c7d2fe);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .gradient-text-accent {
+      background: linear-gradient(135deg, #f472b6 0%, #fbbf24 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Card Styles */
+    .card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.01);
+      box-shadow: 0 20px 40px rgba(110, 231, 183, 0.2), 0 0 30px rgba(147, 197, 253, 0.2);
+      border-color: rgba(110, 231, 183, 0.3);
+    }
+
+    /* Section Number */
+    .section-number {
+      background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%);
+      color: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 4px 20px rgba(91, 33, 182, 0.5);
+    }
+
+    /* Code Inline */
+    .code-inline {
+      background: linear-gradient(135deg, rgba(147, 197, 253, 0.2), rgba(110, 231, 183, 0.2));
+      color: #f0f9ff;
+      padding: 0.3rem 0.8rem;
+      border-radius: 0.5rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Navigation */
+    .nav-link {
+      position: relative;
+      transition: all 0.3s ease;
+      background: linear-gradient(to right, #c4b5fd, #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1.3rem;
+    }
+
+    .nav-link::before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 3px;
+      bottom: -5px;
+      left: 0;
+      background: linear-gradient(to right, #6ee7b7, #fde68a);
+      transition: width 0.4s ease-in-out;
+      border-radius: 2px;
+    }
+
+    .nav-link:hover::before,
+    .nav-link.active::before {
+      width: 100%;
+    }
+
+    /* Logic Box */
+    .logic-box {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-in-out, padding 0.5s ease-in-out;
+      opacity: 0;
+    }
+
+    .logic-box.open {
+      max-height: 800px;
+      opacity: 1;
+      padding-top: 1.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .logic-content {
+      background: linear-gradient(135deg, rgba(244, 114, 182, 0.1), rgba(251, 191, 36, 0.1));
+      border: 1px solid rgba(244, 114, 182, 0.2);
+    }
+
+    .logic-content:hover {
+      border-color: rgba(244, 114, 182, 0.4);
+    }
+
+    /* Feature List Item */
+    .feature-list-item {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      border-left: 3px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .feature-list-item:hover {
+      border-left-color: #f472b6;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+      transform: translateX(5px);
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, rgba(5, 5, 21, 0.95), rgba(26, 26, 46, 0.95));
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Button */
+    .btn-glow {
+      background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 100%);
+      transition: all 0.3s ease;
+    }
+
+    .btn-glow:hover {
+      box-shadow: 0 0 25px rgba(91, 33, 182, 0.6);
+      transform: scale(1.05);
+    }
+
+    /* Icon Transition */
+    .icon-transition {
+      transition: transform 0.4s ease;
+    }
+
+    /* Chip Style */
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, rgba(244, 114, 182, 0.25), rgba(251, 191, 36, 0.25));
+      border: 1px solid rgba(244, 114, 182, 0.4);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .chip-icon {
+      margin-right: 0.5rem;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #4c1d95, #5b21b6);
+      border-radius: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, #5b21b6, #4c1d95);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class='sticky top-0 z-50'>
+    <div class='w-full px-10 py-7 flex justify-between items-center'>
+      <div>
+        <h1 class='text-6xl font-black gradient-text-primary'>Dashboard User Guide</h1>
+        <p class='text-xl gradient-text-secondary mt-2'>For <span class='font-bold' style='-webkit-text-fill-color: #e0e7ff;'>ITsutra Inc.</span></p>
+      </div>
+      <div class='flex items-center gap-6'>
+        <span class='text-xl gradient-text-secondary'>v2.0 Premium</span>
+        <div class='w-px h-8 bg-gradient-to-b from-transparent via-white to-transparent opacity-30'></div>
+        <button class='btn-glow p-4 rounded-full'>
+          <i data-lucide='sparkles' class='w-7 h-7 text-white'></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class='w-full px-10 py-14 grid grid-cols-1 lg:grid-cols-4 gap-14'>
+
+    <!-- Sidebar Navigation -->
+    <nav class='lg:col-span-1 lg:sticky lg:top-36 h-fit'>
+      <div class='card rounded-3xl p-10'>
+        <h3 class='font-black text-4xl gradient-text-primary mb-10'>Contents</h3>
+        <ul class='space-y-6 text-xl font-semibold'>
+          <li><a href='#header-context' class='nav-link block'>1. Header Context</a></li>
+          <li><a href='#control-panel' class='nav-link block'>2. Control Panel</a></li>
+          <li><a href='#kpi-cards' class='nav-link block'>3. KPI Cards</a></li>
+          <li><a href='#conversion-funnel' class='nav-link block'>4. Conversion Funnel</a></li>
+          <li><a href='#distribution-charts' class='nav-link block'>5. Distribution Charts</a></li>
+          <li><a href='#data-tables' class='nav-link block'>6. Data Tables</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Content Area -->
+    <div class='lg:col-span-3 space-y-14'>
+
+      <!-- Section 1: Header -->
+      <section id='header-context' class='card rounded-3xl p-12'>
+        <h2 class='text-5xl font-black mb-8 flex items-center'>
+          <span class='section-number flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-3xl mr-6'>1</span>
+          The Dashboard Header: Your Context
+        </h2>
+        <p class='gradient-text-secondary leading-relaxed text-2xl'>
+          At the very top, you'll see the basic information to confirm you're looking at the right data. This is your anchor, ensuring you're always oriented correctly.
+        </p>
+        <div class='mt-10 space-y-5'>
+          <div class='feature-list-item p-7 rounded-2xl'>
+            <div class='flex items-start'>
+              <i data-lucide='check-circle-2' class='w-9 h-9 text-green-400 mr-5 mt-1 flex-shrink-0'></i>
+              <div>
+                <span class='font-bold gradient-text-primary text-2xl'>Company Name:</span> <code class='code-inline'>ITsutra Inc.</code>
+              </div>
+            </div>
+          </div>
+          <div class='feature-list-item p-7 rounded-2xl'>
+            <div class='flex items-start'>
+              <i data-lucide='check-circle-2' class='w-9 h-9 text-green-400 mr-5 mt-1 flex-shrink-0'></i>
+              <div>
+                <span class='font-bold gradient-text-primary text-2xl'>Dashboard Name:</span> <code class='code-inline'>Interviews And Submissions Dashboard</code>
+              </div>
+            </div>
+          </div>
+          <div class='feature-list-item p-7 rounded-2xl'>
+            <div class='flex items-start'>
+              <i data-lucide='alert-circle' class='w-9 h-9 text-yellow-400 mr-5 mt-1 flex-shrink-0'></i>
+              <div>
+                <span class='font-bold gradient-text-primary text-2xl'>Last Updated:</span>
+                <div class='chip mt-4'>
+                  <i data-lucide='clock' class='w-6 h-6 chip-icon'></i>
+                  This timestamp tells you exactly when the data was last refreshed. Always check this to ensure you're looking at the most recent information.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Control Panel -->
+      <section id='control-panel' class='card rounded-3xl p-12'>
+        <h2 class='text-5xl font-black mb-8 flex items-center'>
+          <span class='section-number flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-3xl mr-6'>2</span>
+          The Control Panel: How to Filter Your Data
+        </h2>
+        <p class='gradient-text-secondary leading-relaxed text-2xl mb-10'>
+          These filters are the most important controls. They change the entire dashboard to show you exactly what you need to see. Mastering these gives you complete control over your data view.
+        </p>
+        <div class='space-y-6'>
+          <div class='logic-content p-8 rounded-2xl'>
+            <h4 class='font-black gradient-text-primary mb-4 flex items-center text-3xl'><i data-lucide='clock' class='w-8 h-8 mr-4'></i>Quick Time Filters & Report Period</h4>
+            <p class='gradient-text-secondary text-xl'>These are shortcuts for common date ranges. The <span class='font-bold gradient-text-primary'>Report Period</span> is your custom date range selector.</p>
+            <div class='chip mt-4'>
+              <i data-lucide='alert-triangle' class='w-6 h-6 chip-icon'></i>
+              All KPIs and charts that depend on a date will use this range.
+            </div>
+          </div>
+          <div class='logic-content p-8 rounded-2xl'>
+            <h4 class='font-black gradient-text-primary mb-4 flex items-center text-3xl'><i data-lucide='calendar' class='w-8 h-8 mr-4'></i>Interview Date Context (Crucial Filter)</h4>
+            <p class='gradient-text-secondary text-xl mb-5'>This filter changes the <span class='font-bold gradient-text-primary'>definition</span> of an 'interview' for the entire dashboard. It answers the question: 'When do we count an interview?'</p>
+            <div class='chip mb-5'>
+              <i data-lucide='filter' class='w-6 h-6 chip-icon'></i>
+              Context Filter - This determines how interviews are counted across the entire dashboard
+            </div>
+            <ul class='space-y-4 gradient-text-secondary text-xl'>
+              <li class='flex items-start'>
+                <i data-lucide='arrow-right' class='w-7 h-7 mr-4 mt-0.5 flex-shrink-0 text-purple-400'></i>
+                <div><span class='font-bold gradient-text-primary'>By Interview Start Date (Default):</span> Counts an interview when it <span class='font-bold'>happened</span>. Use this to analyze performance.</div>
+              </li>
+              <li class='flex items-start'>
+                <i data-lucide='arrow-right' class='w-7 h-7 mr-4 mt-0.5 flex-shrink-0 text-pink-400'></i>
+                <div><span class='font-bold gradient-text-primary'>By Interview Created Date:</span> Counts an interview when it was <span class='font-bold'>scheduled</span>. Use this to measure team productivity.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 3: KPI Cards -->
+      <section id='kpi-cards' class='card rounded-3xl p-12'>
+        <h2 class='text-5xl font-black mb-8 flex items-center'>
+          <span class='section-number flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-3xl mr-6'>3</span>
+          The KPI Cards: Your Key Metrics & Their Logic
+        </h2>
+        <p class='gradient-text-secondary leading-relaxed text-2xl mb-10'>
+          These are the main numbers at the top. Here is exactly how each one is calculated based on your selected <span class='font-bold gradient-text-primary'>Report Period</span>. Click 'View Logic' to see the detailed calculation.
+        </p>
+        <div class='space-y-5'>
+          <!-- KPI 1 -->
+          <div class='logic-content p-8 rounded-2xl'>
+            <div class='flex justify-between items-center'>
+              <h4 class='font-black gradient-text-primary text-3xl'>Total Submissions</h4>
+              <button class='logic-toggle flex items-center gap-3 text-xl gradient-text-accent hover:opacity-80 transition-opacity' data-target='logic-1'>
+                <span>View Logic</span>
+                <i data-lucide='chevron-down' class='w-7 h-7 icon-transition'></i>
+              </button>
+            </div>
+            <div id='logic-1' class='logic-box'>
+              <div class='pt-5'>
+                <p class='font-black gradient-text-primary mb-4 text-xl'>How it's Calculated:</p>
+                <p class='gradient-text-secondary text-xl'>We count every submission where the <code class='code-inline'>Submission Created Date</code> falls within your selected Report Period.</p>
+              </div>
+            </div>
+          </div>
+          <!-- KPI 2 -->
+          <div class='logic-content p-8 rounded-2xl'>
+            <div class='flex justify-between items-center'>
+              <h4 class='font-black gradient-text-primary text-3xl'>Total Interviews</h4>
+              <button class='logic-toggle flex items-center gap-3 text-xl gradient-text-accent hover:opacity-80 transition-opacity' data-target='logic-2'>
+                <span>View Logic</span>
+                <i data-lucide='chevron-down' class='w-7 h-7 icon-transition'></i>
+              </button>
+            </div>
+            <div id='logic-2' class='logic-box'>
+              <div class='pt-5'>
+                <p class='font-black gradient-text-primary mb-4 text-xl'>How it's Calculated:</p>
+                <p class='gradient-text-secondary text-xl'>We count every interview based on the <code class='code-inline'>Interview Date Context</code> filter you selected. By default, it counts all interviews where the <code class='code-inline'>Interview Start Date</code> is within your selected Report Period.</p>
+              </div>
+            </div>
+          </div>
+          <!-- KPI 3 -->
+          <div class='logic-content p-8 rounded-2xl'>
+            <div class='flex justify-between items-center'>
+              <h4 class='font-black gradient-text-primary text-3xl'>Hired</h4>
+              <button class='logic-toggle flex items-center gap-3 text-xl gradient-text-accent hover:opacity-80 transition-opacity' data-target='logic-3'>
+                <span>View Logic</span>
+                <i data-lucide='chevron-down' class='w-7 h-7 icon-transition'></i>
+              </button>
+            </div>
+            <div id='logic-3' class='logic-box'>
+              <div class='pt-5'>
+                <p class='font-black gradient-text-primary mb-4 text-xl'>How it's Calculated:</p>
+                <p class='gradient-text-secondary text-xl'>We count all submissions where the <code class='code-inline'>Hired Date</code> is not blank AND the status is <code class='code-inline'>Hired</code> or <code class='code-inline'>Hired External</code>. The <code class='code-inline'>Hired Date</code> must fall within your selected Report Period.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: Conversion Funnel -->
+      <section id='conversion-funnel' class='card rounded-3xl p-12'>
+        <h2 class='text-5xl font-black mb-8 flex items-center'>
+          <span class='section-number flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-3xl mr-6'>4</span>
+          The Recruitment Conversion Funnel
+        </h2>
+        <p class='gradient-text-secondary leading-relaxed text-2xl mb-10'>
+          This shows the percentage of candidates who move from one key stage to the next. Its calculation depends on a critical choice.
+        </p>
+        <div class='logic-content p-8 rounded-2xl'>
+          <h4 class='font-black gradient-text-primary mb-5 text-3xl'>How it's Calculated:</h4>
+          <p class='gradient-text-secondary text-xl mb-6'>The funnel's data source can be switched. It measures candidates who entered the funnel based on either:</p>
+          <div class='chip mb-5'>
+            <i data-lucide='settings' class='w-6 h-6 chip-icon'></i>
+            Funnel Data Source - This determines how candidates are included in the conversion funnel
+          </div>
+          <ul class='space-y-5 gradient-text-secondary text-xl'>
+            <li class='flex items-start'>
+              <i data-lucide='arrow-right-circle' class='w-8 h-8 mr-4 mt-0.5 flex-shrink-0 text-purple-400'></i>
+              <div><span class='font-bold gradient-text-primary'>By Initial Interview Date:</span> The funnel includes all candidates who had their <span class='font-bold'>first interview</span> within the selected period. This shows your conversion efficiency for the people you actually spoke to.</div>
+            </li>
+            <li class='flex items-start'>
+              <i data-lucide='arrow-right-circle' class='w-8 h-8 mr-4 mt-0.5 flex-shrink-0 text-pink-400'></i>
+              <div><span class='font-bold gradient-text-primary'>By Submission Created Date:</span> The funnel includes all candidates who <span class='font-bold'>applied</span> within the selected period. This shows your end-to-end conversion efficiency starting from the very first application.</div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Section 5: Distribution Charts -->
+      <section id='distribution-charts' class='card rounded-3xl p-12'>
+        <h2 class='text-5xl font-black mb-8 flex items-center'>
+          <span class='section-number flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-3xl mr-6'>5</span>
+          The Distribution Charts: Your Interactive Breakdowns
+        </h2>
+        <p class='gradient-text-secondary leading-relaxed text-2xl mb-10'>
+          These charts let you segment your data and act as powerful filters for the entire dashboard view.
+        </p>
+        <div class='space-y-6'>
+          <div class='logic-content p-8 rounded-2xl'>
+            <h4 class='font-black gradient-text-primary mb-4 text-3xl'>Submission Status & Distribution</h4>
+            <p class='gradient-text-secondary text-xl'>Based on all submissions with a <code class='code-inline'>Submission Created Date</code> within your selected Report Period.</p>
+            <div class='chip mt-4'>
+              <i data-lucide='mouse-pointer-click' class='w-6 h-6 chip-icon'></i>
+              Click on any bar to filter the entire dashboard to show only data for candidates with that status.
+            </div>
+          </div>
+          <div class='logic-content p-8 rounded-2xl'>
+            <h4 class='font-black gradient-text-primary mb-4 text-3xl'>Interview Distributions (Level, Mode, Status, Tier)</h4>
+            <p class='gradient-text-secondary text-xl'>These charts are based on the <code class='code-inline'>Interview Date Context</code> filter. By default, they count all interviews where the <code class='code-inline'>Interview Start Date</code> is within your selected Report Period.</p>
+            <div class='chip mt-4'>
+              <i data-lucide='mouse-pointer-click' class='w-6 h-6 chip-icon'></i>
+              Click on any segment to filter the entire dashboard to see only candidates from that specific interview group.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 6: Data Tables -->
+      <section id='data-tables' class='card rounded-3xl p-12'>
+        <h2 class='text-5xl font-black mb-8 flex items-center'>
+          <span class='section-number flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center text-3xl mr-6'>6</span>
+          The Data Tables: Your Detailed Records
+        </h2>
+        <p class='gradient-text-secondary leading-relaxed text-2xl'>
+          The <span class='font-bold gradient-text-primary'>Submission Details</span> and <span class='font-bold gradient-text-primary'>Interview Details</span> tables at the bottom show the individual, line-by-line data. These tables are the final output of all your filtering. Every selection you make in the Control Panel, every KPI you consider, and every chart segment you click will refine the data shown in these tables. They are your source for drilling down to the exact candidate or interview you need to investigate.
+        </p>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      // Logic Box Toggles
+      const logicToggles = document.querySelectorAll('.logic-toggle');
+      logicToggles.forEach(button => {
+        button.addEventListener('click', () => {
+          const targetId = button.getAttribute('data-target');
+          const logicBox = document.getElementById(targetId);
+          const icon = button.querySelector('.icon-transition');
+          const text = button.querySelector('span');
+          logicBox.classList.toggle('open');
+          if (logicBox.classList.contains('open')) {
+            icon.style.transform = 'rotate(180deg)';
+            text.textContent = 'Hide Logic';
+          } else {
+            icon.style.transform = 'rotate(0deg)';
+            text.textContent = 'View Logic';
+          }
+        });
+      });
+      // Active Nav Link on Scroll
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-link');
+      const highlightNavLink = () => {
+        const scrollY = window.pageYOffset;
+        sections.forEach(current => {
+          const sectionHeight = current.offsetHeight;
+          const sectionTop = current.offsetTop - 150; // Adjust for sticky header
+          const sectionId = current.getAttribute('id');
+          if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+            navLinks.forEach(link => {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === `#${sectionId}`) {
+                link.classList.add('active');
+              }
+            });
+          }
+        });
+      };
+      window.addEventListener('scroll', highlightNavLink);
+      highlightNavLink(); // Initial call
+    });
+  </script>
+</body>
+
+</html>
